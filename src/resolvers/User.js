@@ -5,6 +5,4 @@ const links = async (parent, args, context) => {
   return links;
 };
 
-module.exports = {
-  links,
-};
+export default { links };

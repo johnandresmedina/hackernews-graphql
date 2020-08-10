@@ -9,7 +9,4 @@ const votes = (parent, args, context, info) => {
   return context.prisma.link.findOne({ where: { id: parent.id } }).votes();
 };
 
-module.exports = {
-  postedBy,
-  votes,
-};
+export default { postedBy, votes };

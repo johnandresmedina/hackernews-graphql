@@ -16,7 +16,4 @@ const newVote = {
   resolve: (payload) => payload,
 };
 
-module.exports = {
-  newLink,
-  newVote,
-};
+export default { newLink, newVote };

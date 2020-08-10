@@ -1,11 +1,12 @@
-const { GraphQLServer, PubSub } = require("graphql-yoga");
-const { PrismaClient } = require("@prisma/client");
-const Query = require("./resolvers/Query");
-const Mutation = require("./resolvers/Mutation");
-const User = require("./resolvers/User");
-const Link = require("./resolvers/Link");
-const Subscription = require("./resolvers/Subscription");
-const Vote = require("./resolvers/Vote");
+import { GraphQLServer, PubSub } from "graphql-yoga";
+import { PrismaClient } from "@prisma/client";
+
+import Query from "./resolvers/Query";
+import Mutation from "./resolvers/Mutation";
+import User from "./resolvers/User";
+import Link from "./resolvers/Link";
+import Subscription from "./resolvers/Subscription";
+import Vote from "./resolvers/Vote";
 
 const prisma = new PrismaClient();
 const pubsub = new PubSub();

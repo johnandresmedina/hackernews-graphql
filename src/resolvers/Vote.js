@@ -14,7 +14,4 @@ const user = (parent, args, context) => {
     .user();
 };
 
-module.exports = {
-  link,
-  user,
-};
+export default { link, user };

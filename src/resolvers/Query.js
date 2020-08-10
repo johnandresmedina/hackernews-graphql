@@ -27,7 +27,4 @@ const link = async (parent, args, context, info) => {
   return link;
 };
 
-module.exports = {
-  feed,
-  link,
-};
+export default { feed, link };
