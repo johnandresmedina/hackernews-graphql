@@ -1,8 +1,5 @@
 const links = async (parent, args, context) => {
-  const links = context.prisma.user
-    .findOne({ where: { id: parent.id } })
-    .links();
-  return links;
+  return context.prisma.user.findOne({ where: { id: parent.id } }).links();
 };
 
 export default { links };

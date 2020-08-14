@@ -1,19 +1,19 @@
-const newLinkSubscribe = (parent, args, context, info) => {
-  return context.pubsub.asyncIterator("NEW_LINK");
+const newLinkSubscribe = (parent, args, context) => {
+  return context.pubsub.asyncIterator('NEW_LINK');
 };
 
 const newLink = {
   subscribe: newLinkSubscribe,
-  resolve: (payload) => payload,
+  resolve: payload => payload,
 };
 
-const newVoteSubscribe = (parent, args, context, info) => {
-  return context.pubsub.asyncIterator("NEW_VOTE");
+const newVoteSubscribe = (parent, args, context) => {
+  return context.pubsub.asyncIterator('NEW_VOTE');
 };
 
 const newVote = {
   subscribe: newVoteSubscribe,
-  resolve: (payload) => payload,
+  resolve: payload => payload,
 };
 
 export default { newLink, newVote };

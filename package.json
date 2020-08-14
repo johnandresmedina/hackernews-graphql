@@ -4,10 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint src --color",
     "dev": "nodemon --exec babel-node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src -d build",
-    "serve": "node build/index.js"
+    "serve": "node build/index.js",
+    "format:check": "prettier --check \"src/**/*.{js,json,md}\"",
+    "format": "prettier --write \"src/**/*.{js,json,md}\" "
   },
   "keywords": [],
   "author": "",
@@ -24,6 +27,59 @@
     "@babel/node": "^7.10.5",
     "@babel/preset-env": "^7.11.0",
     "@prisma/cli": "^2.4.1",
-    "nodemon": "^2.0.4"
+    "eslint": "^7.6.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.0.5"
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "airbnb-base",
+      "prettier"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 2020
+    },
+    "rules": {
+      "no-console": [
+        "error",
+        {
+          "allow": [
+            "warn",
+            "error",
+            "log"
+          ]
+        }
+      ]
+    }
+  },
+  "prettier": {
+    "printWidth": 100,
+    "trailingComma": "all",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true,
+    "bracketSpacing": true,
+    "useTabs": false,
+    "arrowParens": "avoid",
+    "endOfLine": "lf"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,json}": "eslint",
+    "src/**/*.{js,json,md}": "prettier --write"
+  },
+  "engines": {
+    "node": ">=12.0.0",
+    "npm": ">=6.14.4"
   }
 }

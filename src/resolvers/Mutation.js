@@ -1,8 +1,8 @@
-import { hash, compare } from "bcryptjs";
-import { sign } from "jsonwebtoken";
-import { APP_SECRET, getUserId } from "../utils";
+import { hash, compare } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
+import { APP_SECRET, getUserId } from '../utils';
 
-const signup = async (parent, args, context, info) => {
+const signup = async (parent, args, context) => {
   const password = await hash(args.password, 10);
   const user = await context.prisma.user.create({
     data: { ...args, password },
@@ -12,19 +12,19 @@ const signup = async (parent, args, context, info) => {
   return { token, user };
 };
 
-const login = async (parent, args, context, info) => {
+const login = async (parent, args, context) => {
   const user = await context.prisma.user.findOne({
     where: { email: args.email },
   });
 
   if (!user) {
-    throw new Error("No such user found");
+    throw new Error('No such user found');
   }
 
   const valid = await compare(args.password, user.password);
 
   if (!valid) {
-    throw new Error("Invalid password");
+    throw new Error('Invalid password');
   }
 
   const token = sign({ userId: user.id }, APP_SECRET);
@@ -42,7 +42,7 @@ const post = async (parent, args, context) => {
       postedBy: { connect: { id: userId } },
     },
   });
-  context.pubsub.publish("NEW_LINK", newLink);
+  context.pubsub.publish('NEW_LINK', newLink);
 
   return newLink;
 };
@@ -51,7 +51,7 @@ const updateLink = async (parent, args, context) => {
   const userId = getUserId(context);
 
   const link = context.prisma.link.update({
-    where: { id: parseInt(args.id) },
+    where: { id: parseInt(args.id, 10) },
     data: {
       description: args.description,
       url: args.url,
@@ -62,14 +62,14 @@ const updateLink = async (parent, args, context) => {
 };
 
 const deleteLink = async (parent, args, context) => {
-  const link = context.prisma.link.delete({ where: { id: parseInt(args.id) } });
+  const link = context.prisma.link.delete({ where: { id: parseInt(args.id, 10) } });
   return link;
 };
 
-const vote = async (parent, args, context, info) => {
+const vote = async (parent, args, context) => {
   const userId = getUserId(context);
 
-  const vote = await context.prisma.vote.findOne({
+  const foundVote = await context.prisma.vote.findOne({
     where: {
       linkId_userId: {
         linkId: Number(args.linkId),
@@ -78,7 +78,7 @@ const vote = async (parent, args, context, info) => {
     },
   });
 
-  if (Boolean(vote)) {
+  if (foundVote) {
     throw new Error(`Already voted for link: ${args.linkId}`);
   }
 
@@ -89,8 +89,8 @@ const vote = async (parent, args, context, info) => {
     },
   });
 
-  context.pubsub.publish("NEW_VOTE", newVote);
+  context.pubsub.publish('NEW_VOTE', newVote);
   return newVote;
 };
 
-export default { login, post, updateLink, deleteLink, vote };
+export default { signup, login, post, updateLink, deleteLink, vote };

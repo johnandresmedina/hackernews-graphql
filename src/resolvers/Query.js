@@ -1,10 +1,7 @@
-const feed = async (parent, args, context, info) => {
+const feed = async (parent, args, context) => {
   const where = args.filter
     ? {
-        OR: [
-          { description: { contains: args.filter } },
-          { url: { contains: args.filter } },
-        ],
+        OR: [{ description: { contains: args.filter } }, { url: { contains: args.filter } }],
       }
     : {};
 
@@ -20,11 +17,11 @@ const feed = async (parent, args, context, info) => {
   return { links, count };
 };
 
-const link = async (parent, args, context, info) => {
-  const link = await context.prisma.link.findOne({
-    where: { id: parseInt(args.id) },
+const link = async (parent, args, context) => {
+  const foundLink = await context.prisma.link.findOne({
+    where: { id: parseInt(args.id, 10) },
   });
-  return link;
+  return foundLink;
 };
 
 export default { feed, link };
